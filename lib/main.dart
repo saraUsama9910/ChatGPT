@@ -13,14 +13,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter ChatBOT',
+    return MaterialApp(      title: 'Flutter ChatBOT',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: scaffoldBackgroundColor,
+          useMaterial3: true,
           appBarTheme: AppBarTheme(
             color: cardColor,
           )),
+          
       home: const ChatPage(),
     );
   }
