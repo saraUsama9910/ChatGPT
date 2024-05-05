@@ -72,6 +72,7 @@ class _ChatPageState extends State<ChatPage> {
           return Messages(role: Role.assistant, content: m.text);
         }
       },
+      
     ).toList();
     final request = ChatCompleteText(
       model: GptTurbo0301ChatModel(),
