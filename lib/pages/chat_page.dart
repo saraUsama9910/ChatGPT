@@ -14,14 +14,13 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final _openAI = OpenAI.instance.build(
-    token: OPENAI_API_KEY,
-    baseOption: HttpSetup(
-      receiveTimeout: const Duration(
-        seconds: 5,
+      token: OPENAI_API_KEY,
+      baseOption: HttpSetup(
+        receiveTimeout: const Duration(
+          seconds: 5,
+        ),
       ),
-    ),
-    enableLog: true
-  );
+      enableLog: true);
   // final _openAI = OpenAI.instance.build(
   //   token: OPENAI_API_KEY,
   //   baseOption: HttpSetup(
@@ -64,5 +63,13 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, m);
     });
+    List<Messages> _messagesHistory = _messages.map((m) {
+      if (m.user == _currentUser) {
+        return Messages(role: Role.user, content: m.text);
+      }else {
+                return Messages(role: Role.assistant, content: m.text);
+
+      }
+    }).toList();
   }
 }
