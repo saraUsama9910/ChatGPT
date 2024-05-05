@@ -1,2 +1,3 @@
-String BASE_URL = "https://api.openai.com/v1";
-String API_KEY = "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";
+// ignore: constant_identifier_names
+const OPENAI_API_KEY =
+    "sk-proj-EDiZX1DdXjVQJlSKDBFaT3BlbkFJbH5c4usoYBIXGkput3BD";
