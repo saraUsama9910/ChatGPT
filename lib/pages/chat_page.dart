@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:chat_gpt_sdk/chat_gpt_sdk.dart';
 import 'package:chatgpt/constants/constants.dart';
 import 'package:dash_chat_2/dash_chat_2.dart';
@@ -31,7 +29,8 @@ class _ChatPageState extends State<ChatPage> {
       ChatUser(id: '1', firstName: 'Sara', lastName: 'Mostafa');
   final ChatUser _currentBotUser =
       ChatUser(id: '1', firstName: 'Chat', lastName: 'Bot');
-  final List<ChatMessage> _messages = <ChatMessage>[];
+  List<ChatMessage> _messages = <ChatMessage>[];
+  List<ChatUser> _typingUsers = <ChatUser>[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,14 +61,40 @@ class _ChatPageState extends State<ChatPage> {
     print(m.text);
     setState(() {
       _messages.insert(0, m);
+      _typingUsers.add(_currentBotUser);
     });
-    List<Messages> _messagesHistory = _messages.reversed.map((m) {
-      if (m.user == _currentUser) {
-        return Messages(role: Role.user, content: m.text);
-      }else {
-                return Messages(role: Role.assistant, content: m.text);
-
+    List<Messages> _messagesHistory = _messages.reversed.map(
+      (m) {
+        if (m.user == _currentUser) {
+          return Messages(role: Role.user, content: m.text);
+        } else {
+          return Messages(role: Role.assistant, content: m.text);
+        }
+      },
+    ).toList();
+    final request = ChatCompleteText(
+      model: GptTurbo0301ChatModel(),
+      messages: _messagesHistory,
+      maxToken: 200,
+    );
+    final response = await _openAI.onChatCompletion(request: request);
+    for (var element in response!.choices) {
+      if (element.message != null) {
+        setState(
+          () {
+            _messages.insert(
+              0,
+              ChatMessage(
+                  user: _currentBotUser,
+                  createdAt: DateTime.now(),
+                  text: element.message!.content),
+            );
+          },
+        );
       }
-    }).toList();
+    }
+    setState(() {
+      _typingUsers.remove(_currentBotUser);
+    });
   }
 }
