@@ -63,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages.insert(0, m);
     });
-    List<Messages> _messagesHistory = _messages.map((m) {
+    List<Messages> _messagesHistory = _messages.reversed.map((m) {
       if (m.user == _currentUser) {
         return Messages(role: Role.user, content: m.text);
       }else {
