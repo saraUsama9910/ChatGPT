@@ -26,9 +26,9 @@ class _ChatPageState extends State<ChatPage> {
   //   ),
   // );
   final ChatUser _currentUser =
-      ChatUser(id: '1', firstName: 'Sara', lastName: 'Mostafa');
+  ChatUser(id: '1', firstName: 'Sara', lastName: 'Mostafa');
   final ChatUser _currentBotUser =
-      ChatUser(id: '1', firstName: 'Chat', lastName: 'Bot');
+  ChatUser(id: '1', firstName: 'Chat', lastName: 'Bot');
   final List<ChatMessage> _messages = <ChatMessage>[];
   final List<ChatUser> _typingUsers = <ChatUser>[];
   @override
@@ -64,15 +64,20 @@ class _ChatPageState extends State<ChatPage> {
       _messages.insert(0, m);
       _typingUsers.add(_currentBotUser);
     });
-    List<Messages> messagesHistory = _messages.reversed.map(
-      (m) {
+    List<Map<String, dynamic>> messagesHistory = _messages.reversed.map(
+          (m) {
         if (m.user == _currentUser) {
-          return Messages(role: Role.user, content: m.text);
+          return {
+            'role': Role.user.toString(),
+            'content': m.text,
+          };
         } else {
-          return Messages(role: Role.assistant, content: m.text);
+          return {
+            'role': Role.assistant.toString(),
+            'content': m.text,
+          };
         }
       },
-      
     ).toList();
     final request = ChatCompleteText(
       model: GptTurbo0301ChatModel(),
@@ -83,7 +88,7 @@ class _ChatPageState extends State<ChatPage> {
     for (var element in response!.choices) {
       if (element.message != null) {
         setState(
-          () {
+              () {
             _messages.insert(
               0,
               ChatMessage(
