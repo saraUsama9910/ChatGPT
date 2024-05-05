@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: DashChat(
           currentUser: _currentUser,
-          
+          typingUsers: _typingUsers,
           messageOptions: const MessageOptions(
             currentUserContainerColor: Color.fromARGB(255, 48, 60, 230),
             containerColor: Color.fromARGB(255, 75, 117, 255),
