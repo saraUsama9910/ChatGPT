@@ -29,8 +29,8 @@ class _ChatPageState extends State<ChatPage> {
       ChatUser(id: '1', firstName: 'Sara', lastName: 'Mostafa');
   final ChatUser _currentBotUser =
       ChatUser(id: '1', firstName: 'Chat', lastName: 'Bot');
-  List<ChatMessage> _messages = <ChatMessage>[];
-  List<ChatUser> _typingUsers = <ChatUser>[];
+  final List<ChatMessage> _messages = <ChatMessage>[];
+  final List<ChatUser> _typingUsers = <ChatUser>[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +45,7 @@ class _ChatPageState extends State<ChatPage> {
       ),
       body: DashChat(
           currentUser: _currentUser,
+          
           messageOptions: const MessageOptions(
             currentUserContainerColor: Color.fromARGB(255, 48, 60, 230),
             containerColor: Color.fromARGB(255, 75, 117, 255),
@@ -63,7 +64,7 @@ class _ChatPageState extends State<ChatPage> {
       _messages.insert(0, m);
       _typingUsers.add(_currentBotUser);
     });
-    List<Messages> _messagesHistory = _messages.reversed.map(
+    List<Messages> messagesHistory = _messages.reversed.map(
       (m) {
         if (m.user == _currentUser) {
           return Messages(role: Role.user, content: m.text);
@@ -74,7 +75,7 @@ class _ChatPageState extends State<ChatPage> {
     ).toList();
     final request = ChatCompleteText(
       model: GptTurbo0301ChatModel(),
-      messages: _messagesHistory,
+      messages: messagesHistory,
       maxToken: 200,
     );
     final response = await _openAI.onChatCompletion(request: request);
